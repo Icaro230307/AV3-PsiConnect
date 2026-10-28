@@ -82,7 +82,7 @@ classDiagram
     Usuario <|-- Psicologo
 
     Psicologo "1" --> "0..*" Disponibilidade : possui
-    Psicologo "1" --> "0..*" Agendamento : realiza
+    Psicologo "1" --> "0..*" Agendamento : atende
     Paciente "1" --> "0..*" Agendamento : solicita
     Agendamento "1" --> "0..*" Lembrete : possui
     Agendamento "1" --> "0..1" Atendimento : gera

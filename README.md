@@ -1,4 +1,3 @@
-
 # AV3-PsiConnect
 
 Projeto acadêmico desenvolvido para a avaliação AV3 da disciplina de Análise Orientada a Objetos.

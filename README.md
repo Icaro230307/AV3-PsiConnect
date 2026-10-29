@@ -109,4 +109,74 @@ stateDiagram-v2
 
     state "Não compareceu" as NaoCompareceu
 ```
+## 3. Diagrama de Sequência — Agendar e Confirmar Consulta
 
+O diagrama de sequência representa a ordem temporal das mensagens trocadas entre os objetos no cenário de agendamento e confirmação de uma consulta, incluindo a verificação de disponibilidade, a confirmação ou recusa pelo psicólogo e o envio do lembrete.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Pac as Paciente
+    actor Psi as Psicólogo
+    participant D as :Disponibilidade
+    participant A as :Agendamento
+    participant L as :Lembrete
+    participant R as :RegistroAuditoria
+
+    Pac->>D: consultarHorarios(idPsicologo)
+    D-->>Pac: horários disponíveis
+
+    Pac->>A: agendarConsulta(idPsicologo, dataHora)
+    A->>D: verificarDisponibilidade(dataHora)
+
+    alt horário disponível
+        D-->>A: disponível
+        A->>A: definirStatus("Solicitado")
+        A->>R: registrarOperacao("Agendamento solicitado")
+        A-->>Pac: solicitação registrada
+    else horário indisponível
+        D-->>A: indisponível
+        A-->>Pac: horário indisponível, escolha outro
+    end
+
+    Psi->>A: consultarAgendamentos()
+    A-->>Psi: lista de agendamentos pendentes
+
+    alt psicólogo confirma
+        Psi->>A: confirmarConsulta(idAgendamento)
+        A->>A: definirStatus("Confirmado")
+        A->>R: registrarOperacao("Agendamento confirmado")
+        A->>L: enviarLembrete(antecedencia, canal)
+        L-->>Pac: lembrete da consulta
+        A-->>Psi: confirmação concluída
+    else psicólogo recusa
+        Psi->>A: cancelarConsulta(idAgendamento)
+        A->>A: definirStatus("Cancelado")
+        A->>R: registrarOperacao("Agendamento cancelado")
+        A-->>Pac: notificação de cancelamento
+    end
+```
+
+## 4. Diagrama de Comunicação — Agendar e Confirmar Consulta
+
+O diagrama de comunicação representa o mesmo cenário do diagrama de sequência, enfatizando os vínculos entre os objetos e a numeração sequencial das mensagens. Como o Mermaid não possui sintaxe nativa para diagramas de comunicação, ele foi representado com `flowchart`, usando objetos como nós e mensagens numeradas nas setas.
+
+```mermaid
+flowchart LR
+    Pac(["Paciente"])
+    Psi(["Psicólogo"])
+    D["d : Disponibilidade"]
+    A["a : Agendamento"]
+    L["l : Lembrete"]
+    R["r : RegistroAuditoria"]
+
+    Pac -->|"1: consultarHorarios()"| D
+    Pac -->|"2: agendarConsulta()"| A
+    A -->|"3: verificarDisponibilidade()"| D
+    A -->|"4: registrarOperacao()"| R
+    Psi -->|"5: consultarAgendamentos()"| A
+    Psi -->|"6: confirmarConsulta()"| A
+    A -->|"7: registrarOperacao()"| R
+    A -->|"8: enviarLembrete()"| L
+    L -->|"9: lembrete da consulta"| Pac
+```

@@ -11,7 +11,7 @@ Este repositório contém os diagramas utilizados na modelagem conceitual do pro
 
 ## 1. Diagrama de Classes
 
-O diagrama de classes representa a estrutura do PsiConnect, suas classes, atributos, operações e relacionamentos.
+Representa as classes, seus atributos, operações e relacionamentos.
 
 ```mermaid
 classDiagram
@@ -97,7 +97,7 @@ classDiagram
 
 ## 2. Diagrama de Estados — Agendamento
 
-O diagrama de estados representa o ciclo de vida de um agendamento, desde a solicitação até sua confirmação, cancelamento, realização ou registro de não comparecimento.
+Representa o ciclo de vida de um agendamento, desde a solicitação até sua conclusão, cancelamento ou não comparecimento.
 
 ```mermaid
 stateDiagram-v2
@@ -121,7 +121,7 @@ stateDiagram-v2
 
 ## 3. Diagrama de Sequência — Agendar e Confirmar Consulta
 
-O diagrama de sequência representa a ordem temporal das mensagens trocadas entre os participantes e objetos envolvidos no processo de agendamento.
+Representa a ordem temporal das mensagens trocadas durante o agendamento e a confirmação de uma consulta.
 
 ```mermaid
 sequenceDiagram
@@ -141,7 +141,6 @@ sequenceDiagram
 
     alt Horário disponível
         D-->>A: disponível
-        A->>A: definirStatus(Solicitado)
         A->>R: registrarOperacao(Agendamento solicitado)
         A-->>Pac: solicitação registrada
     else Horário indisponível
@@ -150,18 +149,15 @@ sequenceDiagram
     end
 
     Psi->>A: consultarAgendamentos()
-    A-->>Psi: lista de agendamentos pendentes
 
     alt Psicólogo confirma
         Psi->>A: confirmarConsulta(idAgendamento)
-        A->>A: definirStatus(Confirmado)
         A->>R: registrarOperacao(Agendamento confirmado)
         A->>L: enviarLembrete(antecedencia, canal)
         L-->>Pac: lembrete da consulta
         A-->>Psi: confirmação concluída
     else Psicólogo recusa
         Psi->>A: cancelarConsulta(idAgendamento)
-        A->>A: definirStatus(Cancelado)
         A->>R: registrarOperacao(Agendamento cancelado)
         A-->>Pac: notificação de cancelamento
     end
@@ -171,7 +167,7 @@ sequenceDiagram
 
 ## 4. Diagrama de Comunicação — Agendar e Confirmar Consulta
 
-O diagrama de comunicação representa os objetos envolvidos e as mensagens trocadas durante o agendamento, utilizando mensagens numeradas para indicar a sequência lógica.
+Representa os objetos envolvidos e as mensagens trocadas no processo de agendamento.
 
 ```mermaid
 flowchart LR
@@ -197,7 +193,7 @@ flowchart LR
 
 ## 5. Diagrama de Componentes — PsiConnect
 
-O diagrama de componentes apresenta os principais módulos funcionais do sistema e suas dependências.
+Apresenta os principais módulos funcionais do sistema e suas dependências.
 
 ```mermaid
 flowchart TB
@@ -253,7 +249,7 @@ flowchart TB
 
 ## 6. Diagrama de Implantação — PsiConnect
 
-O diagrama de implantação representa uma proposta de distribuição da plataforma entre o dispositivo do usuário, o servidor de aplicação e o servidor de banco de dados.
+Representa uma proposta de distribuição da plataforma entre o dispositivo do usuário, o servidor de aplicação e o banco de dados.
 
 ```mermaid
 flowchart TB
@@ -288,6 +284,97 @@ flowchart TB
     LEM <-->|"Dados dos lembretes"| DB
     AUD <-->|"Registros de auditoria"| DB
     LEM -->|"Envio de lembretes"| NOTIF
+```
+
+---
+
+## 7. Diagrama de Casos de Uso — PsiConnect
+
+Representa os atores que interagem com a plataforma e as principais funcionalidades disponíveis para cada perfil.
+
+```mermaid
+flowchart LR
+    Paciente([Paciente])
+    Psicologo([Psicólogo])
+    Administrador([Administrador])
+
+    subgraph PsiConnect["Sistema PsiConnect"]
+        UC1([Cadastrar-se])
+        UC2([Realizar login])
+        UC3([Gerenciar perfil])
+        UC4([Buscar psicólogo])
+        UC5([Agendar consulta])
+        UC6([Cancelar consulta])
+        UC7([Confirmar consulta])
+        UC8([Realizar atendimento])
+        UC9([Gerenciar usuários])
+        UC10([Receber lembrete])
+        UC11([Gerenciar disponibilidade])
+        UC12([Consultar agendamentos])
+    end
+
+    Paciente --> UC1
+    Paciente --> UC2
+    Paciente --> UC3
+    Paciente --> UC4
+    Paciente --> UC5
+    Paciente --> UC6
+    Paciente --> UC10
+
+    Psicologo --> UC2
+    Psicologo --> UC3
+    Psicologo --> UC7
+    Psicologo --> UC8
+    Psicologo --> UC11
+    Psicologo --> UC12
+
+    Administrador --> UC2
+    Administrador --> UC9
+```
+
+---
+
+## 8. Diagrama de Objetos — Exemplo de Agendamento
+
+Representa instâncias concretas das classes em um cenário específico de consulta.
+
+```mermaid
+classDiagram
+    direction LR
+
+    class pacienteJoao {
+        <<Paciente>>
+        idPaciente = 1
+        nome = "João"
+        contato = "joao@email.com"
+        status = "Ativo"
+    }
+
+    class psicologoAna {
+        <<Psicologo>>
+        idPsicologo = 2
+        registroProfissional = "CRP-exemplo"
+        areaAtuacao = "Psicologia Clínica"
+    }
+
+    class agendamento01 {
+        <<Agendamento>>
+        idAgendamento = 1
+        dataHora = "2026-11-10 14:00"
+        status = "Confirmado"
+    }
+
+    class lembrete01 {
+        <<Lembrete>>
+        idLembrete = 1
+        antecedencia = "24 horas"
+        canal = "Email"
+        statusEnvio = "Pendente"
+    }
+
+    pacienteJoao --> agendamento01 : solicita
+    psicologoAna --> agendamento01 : atende
+    agendamento01 --> lembrete01 : possui
 ```
 
 ---

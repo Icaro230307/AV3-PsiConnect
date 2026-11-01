@@ -1,4 +1,3 @@
-
 # PsiConnect
 
 ## Projeto de Modelagem Orientada a Objetos
@@ -15,17 +14,18 @@ Os diagramas abaixo representam a modelagem proposta para o sistema PsiConnect.
 
 ```mermaid
 flowchart LR
-    Admin[Administrador Geral]
-    Psi[Psicólogo]
-    Pac[Cliente/Paciente]
-    Notif[Serviço de Notificações]
+    Admin["Administrador Geral"]
+    Psi["Psicólogo"]
+    Pac["Cliente/Paciente"]
+    Notif["Serviço de Notificações"]
 
     Sistema[["Sistema PsiConnect"]]
 
-    Admin --> Sistema
-    Psi --> Sistema
-    Pac --> Sistema
-    Sistema --> Notif
+    Admin -->|"Gerencia o sistema"| Sistema
+    Psi -->|"Gerencia agenda e atendimentos"| Sistema
+    Pac -->|"Relaciona-se com os serviços"| Sistema
+    Sistema -->|"Solicita envio de lembretes"| Notif
+    Notif -->|"Retorna situação das notificações"| Sistema
 ```
 
 ---
@@ -34,29 +34,29 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Admin[Administrador Geral]
-    Psi[Psicólogo]
-    Pac[Cliente/Paciente]
-    Notif[Serviço de Notificações]
+    Admin["Administrador Geral"]
+    Psi["Psicólogo"]
+    Pac["Cliente/Paciente"]
+    Notif["Serviço de Notificações"]
 
     subgraph Sistema["Sistema PsiConnect"]
-        UC1([Realizar login])
-        UC2([Gerenciar usuários])
-        UC3([Gerenciar perfis e permissões])
-        UC4([Gerenciar informações profissionais])
-        UC5([Gerenciar pacientes])
-        UC6([Gerenciar vínculos profissionais])
-        UC7([Gerenciar disponibilidade])
-        UC8([Gerenciar agendamentos])
-        UC9([Confirmar agendamento])
-        UC10([Cancelar agendamento])
-        UC11([Consultar agenda])
-        UC12([Configurar lembretes])
-        UC13([Enviar lembretes])
-        UC14([Consultar situação dos lembretes])
-        UC15([Consultar registros de atendimento])
-        UC16([Consultar auditoria])
-        UC17([Consultar informações pessoais])
+        UC1(["Realizar login"])
+        UC2(["Gerenciar usuários"])
+        UC3(["Gerenciar perfis e permissões"])
+        UC4(["Gerenciar informações profissionais"])
+        UC5(["Gerenciar pacientes"])
+        UC6(["Gerenciar vínculos profissionais"])
+        UC7(["Gerenciar disponibilidade"])
+        UC8(["Gerenciar agendamentos"])
+        UC9(["Confirmar agendamento"])
+        UC10(["Cancelar agendamento"])
+        UC11(["Consultar agenda"])
+        UC12(["Configurar lembretes"])
+        UC13(["Enviar lembretes"])
+        UC14(["Consultar situação dos lembretes"])
+        UC15(["Consultar registros de atendimento"])
+        UC16(["Consultar auditoria"])
+        UC17(["Consultar informações pessoais"])
     end
 
     Admin --> UC1
@@ -81,6 +81,7 @@ flowchart LR
 
     Pac --> UC1
     Pac --> UC17
+
     Notif --> UC13
 ```
 
@@ -191,49 +192,21 @@ classDiagram
 ## 4. Diagrama de Objetos
 
 ```mermaid
-classDiagram
-    class psicologo01 {
-        <<Psicologo>>
-        registroProfissional = CRP-EXEMPLO
-        areaAtuacao = Psicologia Clinica
-    }
+flowchart TB
+    P["psicologo01 : Psicologo<br/>registroProfissional = CRP-EXEMPLO<br/>areaAtuacao = Psicologia Clínica"]
 
-    class paciente01 {
-        <<Paciente>>
-        idPaciente = 1
-        nome = Paciente Exemplo
-        contato = exemplo@email.com
-        status = Ativo
-    }
+    PAC["paciente01 : Paciente<br/>idPaciente = 1<br/>nome = Paciente Exemplo<br/>contato = exemplo@email.com<br/>status = Ativo"]
 
-    class disponibilidade01 {
-        <<Disponibilidade>>
-        idDisponibilidade = 1
-        data = 10/11/2026
-        horaInicio = 14:00
-        horaFim = 15:00
-        status = Ocupado
-    }
+    D["disponibilidade01 : Disponibilidade<br/>idDisponibilidade = 1<br/>data = 10/11/2026<br/>horaInicio = 14:00<br/>horaFim = 15:00<br/>status = Ocupado"]
 
-    class agendamento01 {
-        <<Agendamento>>
-        idAgendamento = 1
-        dataHora = 10/11/2026 14:00
-        status = Confirmado
-    }
+    A["agendamento01 : Agendamento<br/>idAgendamento = 1<br/>dataHora = 10/11/2026 14:00<br/>status = Confirmado"]
 
-    class lembrete01 {
-        <<Lembrete>>
-        idLembrete = 1
-        antecedencia = 24 horas
-        canal = Email
-        statusEnvio = Pendente
-    }
+    L["lembrete01 : Lembrete<br/>idLembrete = 1<br/>antecedencia = 24 horas<br/>canal = Email<br/>statusEnvio = Pendente"]
 
-    psicologo01 --> disponibilidade01
-    psicologo01 --> agendamento01
-    paciente01 --> agendamento01
-    agendamento01 --> lembrete01
+    P --> D
+    P --> A
+    PAC --> A
+    A --> L
 ```
 
 ---
@@ -243,10 +216,11 @@ classDiagram
 ```mermaid
 sequenceDiagram
     autonumber
+
     actor Psicologo
     participant Interface
-    participant Disponibilidade
     participant Agendamento
+    participant Disponibilidade
     participant Auditoria
 
     Psicologo->>Interface: Informar paciente e horário
@@ -271,11 +245,11 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    P[psicologo: Psicologo]
-    D[disponibilidade: Disponibilidade]
-    A[agendamento: Agendamento]
-    PAC[paciente: Paciente]
-    R[auditoria: RegistroAuditoria]
+    P["psicologo : Psicologo"]
+    A["agendamento : Agendamento"]
+    D["disponibilidade : Disponibilidade"]
+    PAC["paciente : Paciente"]
+    R["auditoria : RegistroAuditoria"]
 
     P -->|"1: criar(paciente, dataHora)"| A
     A -->|"1.1: verificarDisponibilidade()"| D
@@ -292,20 +266,20 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Inicio([Início])
-    A[Psicólogo acessa a agenda]
-    B[Seleciona paciente]
-    C[Informa data e horário]
-    D[Consultar disponibilidade]
-    E{Horário disponível?}
-    F[Verificar conflito de agenda]
-    G{Existe conflito?}
-    H[Criar agendamento]
-    I[Registrar operação na auditoria]
-    J[Apresentar confirmação]
-    K[Informar conflito de horário]
-    L[Informar horário indisponível]
-    Fim([Fim])
+    Inicio(["Início"])
+    A["Psicólogo acessa a agenda"]
+    B["Seleciona paciente"]
+    C["Informa data e horário"]
+    D["Consultar disponibilidade"]
+    E{"Horário disponível?"}
+    F["Verificar conflito de agenda"]
+    G{"Existe conflito?"}
+    H["Criar agendamento"]
+    I["Registrar operação na auditoria"]
+    J["Apresentar confirmação"]
+    K["Informar conflito de horário"]
+    L["Informar horário indisponível"]
+    Fim(["Fim"])
 
     Inicio --> A
     A --> B
@@ -313,12 +287,12 @@ flowchart TD
     C --> D
     D --> E
 
-    E -->|Sim| F
-    E -->|Não| L
+    E -->|"Sim"| F
+    E -->|"Não"| L
 
     F --> G
-    G -->|Não| H
-    G -->|Sim| K
+    G -->|"Não"| H
+    G -->|"Sim"| K
 
     H --> I
     I --> J
@@ -352,31 +326,31 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TB
-    subgraph Identidade["Identidade e Acesso"]
-        Usuario[Usuario]
-        Administrador[Administrador]
+    subgraph Identidade["Pacote: Identidade e Acesso"]
+        Usuario["Usuario"]
+        Administrador["Administrador"]
     end
 
-    subgraph Profissionais["Gestão de Profissionais"]
-        Psicologo[Psicologo]
-        Disponibilidade[Disponibilidade]
+    subgraph Profissionais["Pacote: Gestão de Profissionais"]
+        Psicologo["Psicologo"]
+        Disponibilidade["Disponibilidade"]
     end
 
-    subgraph Pacientes["Gestão de Pacientes"]
-        Paciente[Paciente]
+    subgraph Pacientes["Pacote: Gestão de Pacientes"]
+        Paciente["Paciente"]
     end
 
-    subgraph Agendamentos["Agendamentos"]
-        Agendamento[Agendamento]
-        Lembrete[Lembrete]
+    subgraph Agendamentos["Pacote: Agendamentos"]
+        Agendamento["Agendamento"]
+        Lembrete["Lembrete"]
     end
 
-    subgraph Atendimentos["Atendimentos"]
-        Atendimento[Atendimento]
+    subgraph Atendimentos["Pacote: Atendimentos"]
+        Atendimento["Atendimento"]
     end
 
-    subgraph Auditoria["Auditoria"]
-        Registro[RegistroAuditoria]
+    subgraph Auditoria["Pacote: Auditoria"]
+        Registro["RegistroAuditoria"]
     end
 
     Identidade --> Profissionais
@@ -393,24 +367,24 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    Admin[Administrador Geral]
-    Psi[Psicólogo]
-    Pac[Cliente/Paciente]
+    Admin["Administrador Geral"]
+    Psi["Psicólogo"]
+    Pac["Cliente/Paciente"]
 
     subgraph Sistema["Sistema PsiConnect"]
-        UI[Interface do Usuário]
-        Auth[Autenticação e Controle de Acesso]
-        Usuarios[Gestão de Usuários e Permissões]
-        Cadastros[Gestão de Psicólogos e Pacientes]
-        Agenda[Agenda e Disponibilidade]
-        Agendamentos[Gestão de Agendamentos]
-        Lembretes[Gestão de Lembretes]
-        Atendimentos[Gestão de Atendimentos]
-        Auditoria[Auditoria]
+        UI["Interface do Usuário"]
+        Auth["Autenticação e Controle de Acesso"]
+        Usuarios["Gestão de Usuários e Permissões"]
+        Cadastros["Gestão de Psicólogos e Pacientes"]
+        Agenda["Agenda e Disponibilidade"]
+        Agendamentos["Gestão de Agendamentos"]
+        Lembretes["Gestão de Lembretes"]
+        Atendimentos["Gestão de Atendimentos"]
+        Auditoria["Auditoria"]
     end
 
-    BD[(Banco de Dados Relacional)]
-    Notificacao[Serviço de Notificações]
+    BD[("Banco de Dados Relacional")]
+    Notificacao["Serviço de Notificações"]
 
     Admin --> UI
     Psi --> UI
@@ -438,3 +412,7 @@ flowchart TB
     Atendimentos --> Auditoria
     Lembretes --> Notificacao
 ```
+
+---
+
+**Observação:** os diagramas foram representados com Mermaid para permitir a visualização diretamente no GitHub e a edição do código no README. Algumas representações, como comunicação, pacotes, componentes e objetos, são aproximações visuais, pois Mermaid não oferece uma notação UML nativa específica para todas elas.

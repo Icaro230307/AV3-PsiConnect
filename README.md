@@ -415,4 +415,3 @@ flowchart TB
 
 ---
 
-**Observação:** os diagramas foram representados com Mermaid para permitir a visualização diretamente no GitHub e a edição do código no README. Algumas representações, como comunicação, pacotes, componentes e objetos, são aproximações visuais, pois Mermaid não oferece uma notação UML nativa específica para todas elas.

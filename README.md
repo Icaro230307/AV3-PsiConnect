@@ -23,14 +23,14 @@ Este repositório reúne os artefatos desenvolvidos para a disciplina **Análise
 O objetivo do PsiConnect é representar, por meio da Análise Orientada a Objetos, uma solução capaz de centralizar e organizar:
 
 - Usuários;
-- Perfis e permissões;
+- Perfis / Permissões;
 - Psicólogos;
 - Pacientes;
 - Vínculos profissionais;
 - Disponibilidade dos psicólogos;
 - Agendamentos;
 - Confirmações e cancelamentos;
-- Lembretes por e-mail;
+- Lembrete por e-mail;
 - Registros conceituais de atendimento;
 - Auditoria das operações.
 

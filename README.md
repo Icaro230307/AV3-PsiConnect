@@ -6,8 +6,6 @@ O **PsiConnect** é uma plataforma proposta para auxiliar a gestão de atividade
 
 Este repositório reúne os artefatos desenvolvidos para a disciplina **Análise Orientada a Objetos**, incluindo o dossiê técnico, os diagramas UML em formato editável, o modelo de persistência e os materiais complementares do projeto.
 
-> Todos os nomes, registros profissionais, contatos e demais informações utilizados nos exemplos são fictícios e possuem finalidade exclusivamente acadêmica.
-
 ---
 
 ## Integrantes

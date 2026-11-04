@@ -953,18 +953,6 @@ Responsável pela persistência, conexão com o banco de dados, auditoria e inte
 
 ---
 
-# Tecnologias de Modelagem
-
-Os artefatos do projeto utilizam:
-
-- UML 2.x;
-- Mermaid;
-- Markdown;
-- Modelo relacional;
-- Git;
-- GitHub.
----
-
 # Considerações Finais
 
 O PsiConnect apresenta uma proposta de modelagem integrada para organização de usuários, profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes, atendimentos e auditoria.

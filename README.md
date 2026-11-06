@@ -2,11 +2,9 @@
 
 ## Projeto de Modelagem Orientada a Objetos
 
-O **PsiConnect** é uma plataforma proposta para auxiliar a gestão de atividades relacionadas ao atendimento psicológico, contemplando profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes por e-mail, registros conceituais de atendimento e auditoria.
+O **PsiConnect** é uma plataforma proposta para auxiliar a gestão de atividades relacionadas ao atendimento psicológico, contemplando profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes por e-mail, registros conceituais de atendimento e auditoria. 
 
-Este repositório reúne os artefatos desenvolvidos para a disciplina **Análise Orientada a Objetos**, incluindo o dossiê técnico, os diagramas UML em formato editável, o modelo de persistência e os materiais complementares do projeto.
-
----
+Este repositório reúne a documentação produzida para a disciplina Análise Orientada a Objetos, incluindo o dossiê técnico, os diagramas UML editáveis, o modelo de persistência e os materiais complementares do projeto.
 
 ## Integrantes
 

@@ -2,9 +2,13 @@
 
 ## Projeto de Modelagem Orientada a Objetos
 
-O **PsiConnect** é uma plataforma proposta para auxiliar a gestão de atividades relacionadas ao atendimento psicológico, contemplando profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes por e-mail, registros conceituais de atendimento e auditoria. 
+O **PsiConnect** é uma plataforma proposta para auxiliar a gestão de atividades relacionadas ao atendimento psicológico, contemplando profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes por e-mail, registros conceituais de atendimento e auditoria.
 
-Este repositório reúne a documentação produzida para a disciplina Análise Orientada a Objetos, incluindo o dossiê técnico, os diagramas UML editáveis, o modelo de persistência e os materiais complementares do projeto.
+Este repositório reúne a documentação produzida para a disciplina **Análise Orientada a Objetos**, incluindo o dossiê técnico, os diagramas UML editáveis, o modelo de persistência e os materiais complementares do projeto.
+
+> Todos os nomes, registros, contatos e demais informações utilizados nos exemplos são fictícios e possuem finalidade exclusivamente acadêmica.
+
+---
 
 ## Integrantes
 
@@ -21,14 +25,14 @@ Este repositório reúne a documentação produzida para a disciplina Análise O
 O objetivo do PsiConnect é representar, por meio da Análise Orientada a Objetos, uma solução capaz de centralizar e organizar:
 
 - Usuários;
-- Perfis / Permissões;
+- Perfis e permissões;
 - Psicólogos;
 - Pacientes;
 - Vínculos profissionais;
 - Disponibilidade dos psicólogos;
 - Agendamentos;
 - Confirmações e cancelamentos;
-- Lembrete por e-mail;
+- Lembretes por e-mail;
 - Registros conceituais de atendimento;
 - Auditoria das operações.
 
@@ -68,11 +72,9 @@ Não fazem parte do escopo:
 
 Os diagramas apresentados a seguir representam a modelagem proposta para o sistema PsiConnect.
 
----
-
 ## 1. Diagrama de Contexto
 
-O diagrama de contexto apresenta os principais atores externos e suas interações com o sistema.
+O Diagrama de Contexto apresenta os principais atores externos e suas interações com o sistema.
 
 ```mermaid
 flowchart LR
@@ -80,13 +82,11 @@ flowchart LR
     Psi["Psicólogo"]
     Pac["Paciente"]
     Email["Serviço de E-mail"]
-
     Sistema[["Sistema PsiConnect"]]
 
     Admin -->|"Gerencia usuários, perfis e auditoria"| Sistema
     Psi -->|"Gerencia agenda, vínculos e atendimentos"| Sistema
     Pac -->|"Consulta informações e gerencia agendamentos"| Sistema
-
     Sistema -->|"Solicita envio de lembretes"| Email
     Email -->|"Retorna resultado do envio"| Sistema
 ```
@@ -95,7 +95,7 @@ flowchart LR
 
 ## 2. Diagrama de Casos de Uso
 
-O diagrama apresenta as funcionalidades disponibilizadas para cada ator.
+O Diagrama de Casos de Uso apresenta as funcionalidades disponibilizadas para cada ator.
 
 ```mermaid
 flowchart LR
@@ -153,7 +153,6 @@ flowchart LR
     Pac --> UC17
 
     Email --- UC13
-
     UC13 -.->|"utiliza configuração"| UC12
     UC13 -.->|"registra resultado"| UC14
 ```
@@ -162,7 +161,7 @@ flowchart LR
 
 ## 3. Diagrama de Classes
 
-O diagrama de classes representa as entidades principais, seus atributos, operações e relacionamentos.
+O Diagrama de Classes representa as entidades principais, seus atributos, operações e relacionamentos.
 
 ```mermaid
 classDiagram
@@ -322,7 +321,7 @@ classDiagram
 
 ## 4. Diagrama de Objetos
 
-O diagrama apresenta exemplos fictícios de instâncias das classes do sistema.
+O Diagrama de Objetos apresenta exemplos fictícios de instâncias das classes do sistema.
 
 ```mermaid
 flowchart TB
@@ -383,7 +382,6 @@ sequenceDiagram
             Autenticacao-->>Interface: Informar credenciais inválidas
             Interface-->>Usuario: Exibir mensagem de acesso negado
         end
-
     else Usuário inexistente ou bloqueado
         Autenticacao-->>Interface: Negar autenticação
         Interface-->>Usuario: Exibir mensagem de acesso negado
@@ -430,12 +428,10 @@ sequenceDiagram
                 Agendamento-->>Interface: Informar conflito de horário
                 Interface-->>Solicitante: Solicitar outro horário
             end
-
         else Horário indisponível
             Agendamento-->>Interface: Informar horário indisponível
             Interface-->>Solicitante: Solicitar outro horário
         end
-
     else Vínculo inativo ou inexistente
         Agendamento-->>Interface: Operação não autorizada
         Interface-->>Solicitante: Informar ausência de vínculo ativo
@@ -475,7 +471,6 @@ sequenceDiagram
                 Processador->>RepositorioLembrete: marcarComoFalha(detalheErro)
                 Processador->>Auditoria: registrarOperacao(FALHA_LEMBRETE)
             end
-
         else Agendamento cancelado ou destinatário inválido
             Processador->>RepositorioLembrete: marcarComoFalha(motivo)
         end
@@ -712,8 +707,6 @@ flowchart TB
 
 ## 13. Diagrama de Implantação
 
-O diagrama de implantação apresenta os nós físicos e serviços envolvidos na execução da solução.
-
 ```mermaid
 flowchart LR
     subgraph Cliente["Dispositivo do usuário"]
@@ -889,21 +882,19 @@ erDiagram
 
 ## 15. Regras de Integridade do Banco de Dados
 
-O modelo de persistência deverá respeitar as seguintes regras:
-
 1. O e-mail do usuário deve ser único.
 2. O registro profissional do psicólogo deve ser único.
 3. Todo psicólogo deve estar relacionado a um usuário.
-4. O paciente pode estar relacionado a um usuário para acesso ao sistema.
+4. Todo paciente com acesso ao sistema deve estar relacionado a um usuário ativo.
 5. Todo vínculo deve relacionar um psicólogo e um paciente.
 6. A data final do vínculo não pode ser anterior à data inicial.
 7. O horário final da disponibilidade deve ser posterior ao horário inicial.
 8. O horário final do agendamento deve ser posterior ao horário inicial.
 9. Um psicólogo não pode possuir agendamentos confirmados sobrepostos.
-10. Todo agendamento deve estar relacionado a um psicólogo e um paciente.
+10. Todo agendamento deve estar relacionado a um psicólogo e a um paciente.
 11. Todo lembrete deve estar relacionado a um agendamento.
-12. Um atendimento só pode ser registrado para agendamento realizado.
-13. Cada agendamento pode possuir no máximo um atendimento.
+12. Um atendimento só pode ser registrado para um agendamento realizado.
+13. Cada agendamento pode possuir, no máximo, um atendimento.
 14. Operações críticas devem gerar um registro de auditoria.
 15. Exclusões de usuários, psicólogos e pacientes devem ser preferencialmente lógicas.
 
@@ -917,7 +908,7 @@ O modelo de persistência deverá respeitar as seguintes regras:
 - **RN-004:** todo agendamento deve ocorrer dentro da disponibilidade do psicólogo.
 - **RN-005:** não são permitidos agendamentos confirmados sobrepostos.
 - **RN-006:** o cancelamento deve alterar a situação e liberar o intervalo.
-- **RN-007:** somente agendamentos ativos podem ser confirmados ou cancelados.
+- **RN-007:** agendamentos com situação AGENDADO podem ser confirmados ou cancelados; agendamentos CONFIRMADOS podem ser cancelados, realizados ou marcados como falta.
 - **RN-008:** lembretes devem ser enviados somente para agendamentos ativos.
 - **RN-009:** cada tentativa de envio deve gerar um registro de resultado.
 - **RN-010:** o atendimento só pode ser registrado para um agendamento realizado.
@@ -931,11 +922,9 @@ O modelo de persistência deverá respeitar as seguintes regras:
 
 # Arquitetura Proposta
 
-A arquitetura do PsiConnect está dividida nas seguintes camadas:
-
 ## Camada de apresentação
 
-Responsável pela interação com os usuários por meio da interface web.
+Responsável pela interação com os usuários por meio da Interface Web.
 
 ## Camada de aplicação
 
@@ -947,14 +936,24 @@ Responsável pelas entidades, regras de negócio, estados, relacionamentos e com
 
 ## Camada de infraestrutura
 
-Responsável pela persistência, conexão com o banco de dados, auditoria e integração com o serviço externo de e-mail.
+Responsável pela persistência, conexão com o Banco de Dados Relacional, auditoria e integração com o Serviço Externo de E-mail.
+
+---
+
+# Entregáveis
+
+- **Dossiê técnico:** disponível na pasta `documentos` em formato PDF;
+- **Diagramas editáveis:** disponíveis em código Mermaid neste README;
+- **Modelo de persistência:** apresentado no DER e nas regras de integridade;
+- **Controle de versão:** realizado por meio do histórico de commits do GitHub;
+- **Vídeo-pitch:** [INSERIR LINK APÓS A GRAVAÇÃO].
 
 ---
 
 # Considerações Finais
 
-O PsiConnect apresenta uma proposta de modelagem integrada para organização de usuários, profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes, atendimentos e auditoria.
+O PsiConnect apresenta uma proposta de modelagem integrada para a organização de usuários, profissionais, pacientes, vínculos, disponibilidade, agendamentos, lembretes, atendimentos e auditoria.
 
-Os artefatos deste repositório foram organizados para manter a rastreabilidade e a coerência entre requisitos, regras de negócio, casos de uso, classes, interações, arquitetura e persistência.
+Os materiais deste repositório foram organizados para manter a rastreabilidade e a coerência entre requisitos, regras de negócio, casos de uso, classes, interações, arquitetura e persistência.
 
 O projeto possui finalidade exclusivamente acadêmica e não utiliza dados reais de pacientes ou profissionais.
